@@ -1,0 +1,70 @@
+﻿text,label,source_document,style,style_id,font_size,bold,italic,underline,alignment,left_indent,right_indent,first_line_indent,space_before,space_after,line_spacing,paragraph_index,text_length,word_count,uppercase_ratio,digit_ratio,starts_with_number,starts_with_chapter,starts_with_figure,starts_with_table,looks_like_reference,has_image,has_table
+CHAPTER 1 INTRODUCTION,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,0,22,3,1.0,0.045,0,1,0,0,0,0,0
+Introduction to Modern Engineering,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,1,34,4,0.097,0.0,0,0,0,0,0,0,0
+"A successful system begins with a clear understanding of requirements. Engineers identify the problem, collect relevant information, define constraints, compare possible solutions, and select an approach that can be implemented reliably and economically.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,2,254,33,0.009,0.0,0,0,0,0,0,0,0
+"Modern systems depend on accurate information. Sensors collect physical measurements, controllers process those measurements, actuators perform actions, and software coordinates the overall operation. This interaction creates an integrated engineering system.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,3,259,30,0.013,0.0,0,0,0,0,0,0,0
+Testing is an important part of development. A prototype allows engineers to observe actual behavior and compare it with expected performance. Problems found during testing can be corrected before the final system is produced.,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,4,226,34,0.016,0.0,0,0,0,0,0,0,0
+"Documentation also plays an important role. Design decisions, component specifications, test results, operating procedures, and maintenance information should be recorded clearly so that another person can understand and reproduce the work.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,5,240,31,0.01,0.0,0,0,0,0,0,0,0
+"Technology continues to develop rapidly. Engineers therefore need to combine technical knowledge with communication, teamwork, creativity, analytical thinking, and continuous learning.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,6,184,21,0.013,0.0,0,0,0,0,0,0,0
+"Engineering combines scientific principles, mathematical methods, practical design, and systematic problem solving to create useful products and processes. Modern engineering projects increasingly combine mechanical, electrical, electronic, software, and communication technologies.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,7,282,30,0.008,0.0,0,0,0,0,0,0,0
+"Key terms: engineering, automation, control, technology, design, analysis, testing, implementation.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,8,99,10,0.012,0.0,0,0,0,0,0,0,0
+"Example: A typical engineering workflow includes problem identification, requirement analysis, system design, implementation, testing, evaluation, and improvement.",Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,9,163,17,0.014,0.0,0,0,0,0,0,0,0
+Notes: The information presented in this section provides general background and can be expanded according to the requirements of a particular application.,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,10,155,22,0.015,0.0,0,0,0,0,0,0,0
+CHAPTER 2 ENGINEERING SYSTEMS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,12,29,4,1.0,0.034,0,1,0,0,0,0,0
+Understanding Integrated Engineering Systems,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,13,44,4,0.098,0.0,0,0,0,0,0,0,0
+CHAPTER 3 AUTOMATION,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,24,20,3,1.0,0.05,0,1,0,0,0,0,0
+Automation and Industrial Control,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,25,33,4,0.1,0.0,0,0,0,0,0,0,0
+CHAPTER 4 ROBOTICS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,36,18,3,1.0,0.056,0,1,0,0,0,0,0
+Robotics in Modern Manufacturing,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,37,32,4,0.103,0.0,0,0,0,0,0,0,0
+CHAPTER 5 SENSORS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,48,17,3,1.0,0.059,0,1,0,0,0,0,0
+Sensors and Measurement,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,49,23,3,0.095,0.0,0,0,0,0,0,0,0
+CHAPTER 6 EMBEDDED SYSTEMS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,60,26,4,1.0,0.038,0,1,0,0,0,0,0
+Embedded Systems and Controllers,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,61,32,4,0.103,0.0,0,0,0,0,0,0,0
+CHAPTER 7 INTERNET OF THINGS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,72,28,5,1.0,0.036,0,1,0,0,0,0,0
+Connected Devices and Smart Systems,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,73,35,5,0.129,0.0,0,0,0,0,0,0,0
+CHAPTER 8 ARTIFICIAL INTELLIGENCE,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,84,33,4,1.0,0.03,0,1,0,0,0,0,0
+Artificial Intelligence in Engineering,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,85,38,4,0.086,0.0,0,0,0,0,0,0,0
+CHAPTER 9 MACHINE LEARNING,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,96,26,4,1.0,0.038,0,1,0,0,0,0,0
+Machine Learning Applications,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,97,29,3,0.111,0.0,0,0,0,0,0,0,0
+CHAPTER 10 DATA PROCESSING,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,108,26,4,1.0,0.077,0,1,0,0,0,0,0
+Data Collection and Processing,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,109,30,4,0.111,0.0,0,0,0,0,0,0,0
+CHAPTER 11 INDUSTRIAL COMMUNICATION,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,120,35,4,1.0,0.057,0,1,0,0,0,0,0
+Communication Networks,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,121,22,2,0.095,0.0,0,0,0,0,0,0,0
+CHAPTER 12 PLC SYSTEMS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,132,22,4,1.0,0.091,0,1,0,0,0,0,0
+Programmable Logic Controllers,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,133,30,3,0.107,0.0,0,0,0,0,0,0,0
+CHAPTER 13 SCADA,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,144,16,3,1.0,0.125,0,1,0,0,0,0,0
+Supervisory Control and Data Acquisition,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,145,40,5,0.111,0.0,0,0,0,0,0,0,0
+CHAPTER 14 MECHATRONICS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,156,23,3,1.0,0.087,0,1,0,0,0,0,0
+Mechatronics Integration,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,157,24,2,0.087,0.0,0,0,0,0,0,0,0
+CHAPTER 15 DESIGN,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,168,17,3,1.0,0.118,0,1,0,0,0,0,0
+Engineering Design Methodology,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,169,30,3,0.107,0.0,0,0,0,0,0,0,0
+CHAPTER 16 PROTOTYPING,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,180,22,3,1.0,0.091,0,1,0,0,0,0,0
+Rapid Prototyping,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,181,17,2,0.125,0.0,0,0,0,0,0,0,0
+CHAPTER 17 SMART MANUFACTURING,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,192,30,4,1.0,0.067,0,1,0,0,0,0,0
+Smart Manufacturing Concepts,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,193,28,3,0.115,0.0,0,0,0,0,0,0,0
+CHAPTER 18 INDUSTRY 4.0,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,204,23,4,1.0,0.174,0,1,0,0,0,0,0
+Industry 4.0 Technologies,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,205,25,3,0.1,0.08,0,0,0,0,0,0,0
+CHAPTER 19 ENERGY,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,216,17,3,1.0,0.118,0,1,0,0,0,0,0
+Energy Management,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,217,17,2,0.125,0.0,0,0,0,0,0,0,0
+CHAPTER 20 SUSTAINABILITY,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,228,25,3,1.0,0.08,0,1,0,0,0,0,0
+Sustainable Engineering,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,229,23,2,0.091,0.0,0,0,0,0,0,0,0
+CHAPTER 21 SAFETY,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,240,17,3,1.0,0.118,0,1,0,0,0,0,0
+Industrial Safety,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,241,17,2,0.125,0.0,0,0,0,0,0,0,0
+CHAPTER 22 MAINTENANCE,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,252,22,3,1.0,0.091,0,1,0,0,0,0,0
+Predictive Maintenance,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,253,22,2,0.095,0.0,0,0,0,0,0,0,0
+CHAPTER 23 QUALITY,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,264,18,3,1.0,0.111,0,1,0,0,0,0,0
+Quality Control,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,265,15,2,0.143,0.0,0,0,0,0,0,0,0
+CHAPTER 24 DATA ANALYTICS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,276,25,4,1.0,0.08,0,1,0,0,0,0,0
+Engineering Data Analytics,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,277,26,3,0.125,0.0,0,0,0,0,0,0,0
+CHAPTER 25 CLOUD SYSTEMS,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,288,24,4,1.0,0.083,0,1,0,0,0,0,0
+Cloud-Based Engineering,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,289,23,2,0.143,0.0,0,0,0,0,0,0,0
+CHAPTER 26 CYBER SECURITY,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,300,25,4,1.0,0.08,0,1,0,0,0,0,0
+Cybersecurity for Industrial Systems,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,301,36,4,0.091,0.0,0,0,0,0,0,0,0
+CHAPTER 27 HUMAN MACHINE INTERACTION,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,312,36,5,1.0,0.056,0,1,0,0,0,0,0
+Human-Machine Interaction,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,313,25,2,0.13,0.0,0,0,0,0,0,0,0
+CHAPTER 28 PROJECT DEVELOPMENT,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,324,30,4,1.0,0.067,0,1,0,0,0,0,0
+Engineering Project Development,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,325,31,3,0.103,0.0,0,0,0,0,0,0,0
+CHAPTER 29 FUTURE TECHNOLOGIES,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,336,30,4,1.0,0.067,0,1,0,0,0,0,0
+Future Directions,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,337,17,2,0.125,0.0,0,0,0,0,0,0,0
+CHAPTER 30 CONCLUSION,Chapter Title,unformatted_30_page_manuscript.docx,Normal,Normal,11.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,348,21,3,1.0,0.095,0,1,0,0,0,0,0
+Conclusion and Final Observations,Paragraph,unformatted_30_page_manuscript.docx,Normal,Normal,0.0,0,0,0,unknown,0.0,0.0,0.0,0.0,0.0,0.0,349,33,4,0.1,0.0,0,0,0,0,0,0,0
