@@ -2,6 +2,7 @@
 
 import {
   ArrowRight,
+  BookOpen,
   FileCheck2,
   FileText,
   Lock,
@@ -157,8 +158,6 @@ export function DashboardView() {
           (doc) => doc.status === "exported" || doc.status === "formatted"
         ).length ?? 0
 
-  const avgConfidence = statsData?.avg_confidence ?? (totalDocs > 0 ? "94.2%" : "—")
-
   const stats = [
     {
       label: "Documents",
@@ -169,7 +168,7 @@ export function DashboardView() {
     {
       label: "Pages Formatted",
       value: statsLoading && !statsData ? "…" : totalPages.toLocaleString(),
-      icon: FileCheck2,
+      icon: BookOpen,
       hint: "Across all documents",
     },
     {
@@ -177,12 +176,6 @@ export function DashboardView() {
       value: statsLoading && !statsData ? "…" : exportedCount,
       icon: ShieldCheck,
       hint: "Publication-ready",
-    },
-    {
-      label: "Avg. Confidence",
-      value: statsLoading && !statsData ? "…" : avgConfidence,
-      icon: ScanSearch,
-      hint: "ML classification accuracy",
     },
   ]
 
@@ -225,9 +218,9 @@ export function DashboardView() {
       </section>
 
       {/* ======================================================
-          STATS CARDS (4-METRICS ROW)
+          STATS CARDS (3-METRICS ROW)
       ====================================================== */}
-      <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((stat) => {
           const Icon = stat.icon
 

@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-
 import {
+  AlertCircle,
   AlertTriangle,
   BookOpen,
+  CheckCircle2,
   ChevronRight,
   FileWarning,
   Hash,
@@ -20,7 +21,6 @@ import {
   Type,
   Upload,
 } from "lucide-react"
-
 import useSWR from "swr"
 
 import { Badge } from "@/components/ui/badge"
@@ -31,32 +31,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
 import { Tabs } from "@/components/ui/tabs"
-
 import { EmptyState } from "@/components/views/empty-state"
-
 import { useWorkspace } from "@/components/workspace-context"
-
 import { cn } from "@/lib/utils"
-
 import {
   analyseDocument,
+  correctParagraphType,
   getClassificationResults,
   getDocumentStructure,
   getFormattingIssues,
 } from "@/services/api"
-
 import type { Severity } from "@/types/document"
+
+const CANONICAL_CLASSES = [
+  "TITLE",
+  "AUTHOR",
+  "CHAPTER",
+  "HEADING_1",
+  "HEADING_2",
+  "HEADING_3",
+  "BODY",
+  "ABSTRACT",
+  "KEYWORDS",
+  "CAPTION",
+  "QUOTE",
+  "REFERENCE",
+  "CALLOUT",
+] as const
 
 const severityMeta: Record<
   Severity,
   {
     label: string
-    variant:
-      | "destructive"
-      | "warning"
-      | "info"
+    variant: "destructive" | "warning" | "info"
     icon: typeof AlertTriangle
   }
 > = {
@@ -65,13 +73,11 @@ const severityMeta: Record<
     variant: "destructive",
     icon: AlertTriangle,
   },
-
   medium: {
     label: "Medium",
     variant: "warning",
     icon: FileWarning,
   },
-
   low: {
     label: "Low",
     variant: "info",
@@ -88,80 +94,42 @@ export function AnalysisView() {
     addToast,
   } = useWorkspace()
 
-  const [
-    tab,
-    setTab,
-  ] =
-    useState("overview")
+  const [tab, setTab] = useState("overview")
+  const [running, setRunning] = useState(false)
 
-  const [
-    running,
-    setRunning,
-  ] =
-    useState(false)
-
-  const runAnalysis =
-    async () => {
-      if (!uploadedFile?.id) {
-        addToast({
-          variant: "error",
-          title:
-            "Document ID missing",
-          description:
-            "Please upload the document again.",
-        })
-
-        return
-      }
-
-      setRunning(true)
-
-      try {
-        console.log(
-          "Running analysis for:",
-          uploadedFile.id,
-        )
-
-        await analyseDocument(
-          uploadedFile.id,
-        )
-
-        setAnalysed(true)
-
-        addToast({
-          variant:
-            "success",
-
-          title:
-            "Analysis complete",
-
-          description:
-            "Document structure detected.",
-        })
-      } catch (
-        error
-      ) {
-        console.error(
-          "Analysis error:",
-          error,
-        )
-
-        addToast({
-          variant:
-            "error",
-
-          title:
-            "Analysis failed",
-
-          description:
-            error instanceof Error
-              ? error.message
-              : "Analysis failed.",
-        })
-      } finally {
-        setRunning(false)
-      }
+  const runAnalysis = async () => {
+    if (!uploadedFile?.id) {
+      addToast({
+        variant: "error",
+        title: "Document ID missing",
+        description: "Please upload the document again.",
+      })
+      return
     }
+
+    setRunning(true)
+
+    try {
+      await analyseDocument(uploadedFile.id)
+      setAnalysed(true)
+
+      addToast({
+        variant: "success",
+        title: "Analysis complete",
+        description: "Document structure and ML elements detected.",
+      })
+    } catch (error) {
+      console.error("Analysis error:", error)
+      addToast({
+        variant: "error",
+        title: "Analysis failed",
+        description:
+          error instanceof Error ? error.message : "Analysis failed.",
+      })
+    } finally {
+      setRunning(false)
+    }
+  }
 
   if (!uploadedFile) {
     return (
@@ -190,11 +158,8 @@ export function AnalysisView() {
 
             <div>
               <p className="text-base font-medium text-foreground">
-                {running
-                  ? "Analysing locally…"
-                  : "Ready to analyse"}
+                {running ? "Analysing locally…" : "Ready to analyse"}
               </p>
-
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                 {running
                   ? "Running structure detection and element classification on your device."
@@ -202,15 +167,9 @@ export function AnalysisView() {
               </p>
             </div>
 
-            <Button
-              onClick={runAnalysis}
-              disabled={running}
-            >
+            <Button onClick={runAnalysis} disabled={running}>
               <Sparkles className="size-4" />
-
-              {running
-                ? "Analysing…"
-                : "Run Analysis"}
+              {running ? "Analysing…" : "Run Analysis"}
             </Button>
           </CardContent>
         </Card>
@@ -223,27 +182,16 @@ export function AnalysisView() {
       <div className="flex items-center justify-between gap-3">
         <Tabs
           tabs={[
-            {
-              id: "overview",
-              label: "Overview",
-            },
-            {
-              id: "classification",
-              label: "Classification",
-            },
-            {
-              id: "issues",
-              label: "Issues",
-            },
+            { id: "overview", label: "Overview" },
+            { id: "classification", label: "Classification" },
+            { id: "issues", label: "Issues" },
           ]}
           value={tab}
           onValueChange={setTab}
         />
 
         <Button
-          onClick={() =>
-            navigate("format")
-          }
+          onClick={() => navigate("format")}
           className="hidden sm:inline-flex"
         >
           Continue to Formatting
@@ -251,34 +199,12 @@ export function AnalysisView() {
         </Button>
       </div>
 
-      {tab === "overview" && (
-        <OverviewTab
-          documentId={
-            uploadedFile.id
-          }
-        />
-      )}
-
-      {tab === "classification" && (
-        <ClassificationTab
-          documentId={
-            uploadedFile.id
-          }
-        />
-      )}
-
-      {tab === "issues" && (
-        <IssuesTab
-          documentId={
-            uploadedFile.id
-          }
-        />
-      )}
+      {tab === "overview" && <OverviewTab documentId={uploadedFile.id} />}
+      {tab === "classification" && <ClassificationTab documentId={uploadedFile.id} />}
+      {tab === "issues" && <IssuesTab documentId={uploadedFile.id} />}
 
       <Button
-        onClick={() =>
-          navigate("format")
-        }
+        onClick={() => navigate("format")}
         className="sm:hidden"
       >
         Continue to Formatting
@@ -288,107 +214,45 @@ export function AnalysisView() {
   )
 }
 
-function OverviewTab({
-  documentId,
-}: {
-  documentId: string
-}) {
-  const {
-    data: stats,
-  } =
-    useSWR(
-      `analysis-stats-${documentId}`,
-      () =>
-        analyseDocument(
-          documentId,
-        ),
-    )
+function OverviewTab({ documentId }: { documentId: string }) {
+  const { data: stats } = useSWR(
+    `analysis-stats-${documentId}`,
+    () => analyseDocument(documentId)
+  )
 
-  const {
-    data: structure,
-  } =
-    useSWR(
-      `structure-${documentId}`,
-      () =>
-        getDocumentStructure(
-          documentId,
-        ),
-    )
+  const { data: structure } = useSWR(
+    `structure-${documentId}`,
+    () => getDocumentStructure(documentId)
+  )
+
+  const m = (stats as any)?.metrics ?? stats ?? {}
 
   const metrics = [
-    {
-      label: "Chapters",
-      value: stats?.chapters,
-      icon: BookOpen,
-    },
-
-    {
-      label: "Headings",
-      value: stats?.headings,
-      icon: Hash,
-    },
-
-    {
-      label: "Subheadings",
-      value: stats?.subheadings,
-      icon: Type,
-    },
-
-    {
-      label: "Paragraphs",
-      value: stats?.paragraphs,
-      icon: Layers,
-    },
-
-    {
-      label: "Tables",
-      value: stats?.tables,
-      icon: Table2,
-    },
-
-    {
-      label: "Figures",
-      value: stats?.figures,
-      icon: Image,
-    },
-
-    {
-      label: "Captions",
-      value: stats?.captions,
-      icon: Quote,
-    },
-
-    {
-      label: "References",
-      value: stats?.references,
-      icon: ListTree,
-    },
+    { label: "Chapters", value: m.chapters ?? m.chapter_count ?? 0, icon: BookOpen },
+    { label: "Headings", value: m.headings ?? m.total_headings ?? 0, icon: Hash },
+    { label: "Subheadings", value: m.subheadings ?? ((m.heading_2 ?? 0) + (m.heading_3 ?? 0)), icon: Type },
+    { label: "Paragraphs", value: m.paragraphs ?? m.total_paragraphs ?? 0, icon: Layers },
+    { label: "Tables", value: m.tables ?? m.total_tables ?? 0, icon: Table2 },
+    { label: "Figures", value: m.figures ?? m.total_figures ?? 0, icon: Image },
+    { label: "Captions", value: m.captions ?? m.total_captions ?? 0, icon: Quote },
+    { label: "References", value: m.references ?? m.total_references ?? 0, icon: ListTree },
   ]
 
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       <div className="lg:col-span-3">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {metrics.map((m) => {
-            const Icon =
-              m.icon
-
+          {metrics.map((item) => {
+            const Icon = item.icon
             return (
-              <Card
-                key={
-                  m.label
-                }
-              >
+              <Card key={item.label}>
                 <CardContent className="flex flex-col gap-2 p-4">
                   <Icon className="size-4 text-primary" />
-
                   <span className="text-xl font-semibold text-foreground">
-                    {m.value ??
-                      "—"}
+                    {item.value ?? 0}
                   </span>
-
                   <span className="text-xs text-muted-foreground">
-                    {m.label}
+                    {item.label}
                   </span>
                 </CardContent>
               </Card>
@@ -405,29 +269,22 @@ function OverviewTab({
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-1">
-          {structure?.map(
-            (node) => (
-              <div
-                key={node.id}
-              >
-                <div className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium text-foreground">
-                  <span className="flex items-center gap-2">
-                    <BookOpen className="size-3.5 text-primary" />
-
-                    {node.label}
-                  </span>
-
-                  <span className="text-xs text-muted-foreground">
-                    p.
-                    {node.page}
-                  </span>
-                </div>
+        <CardContent className="flex flex-col gap-1 max-h-[380px] overflow-y-auto">
+          {structure?.map((node: any) => (
+            <div key={node.id}>
+              <div className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium text-foreground hover:bg-accent/30">
+                <span className="flex items-center gap-2 truncate">
+                  <BookOpen className="size-3.5 text-primary shrink-0" />
+                  <span className="truncate">{node.label}</span>
+                </span>
+                <span className="text-xs text-muted-foreground shrink-0">
+                  p. {node.page ?? 1}
+                </span>
               </div>
-            ),
-          )}
+            </div>
+          ))}
 
-          {!structure && (
+          {(!structure || structure.length === 0) && (
             <p className="p-2 text-sm text-muted-foreground">
               Loading structure…
             </p>
@@ -438,21 +295,31 @@ function OverviewTab({
   )
 }
 
-function ClassificationTab({
-  documentId,
-}: {
-  documentId: string
-}) {
+function ClassificationTab({ documentId }: { documentId: string }) {
+  const [updatingIndex, setUpdatingIndex] = useState<number | null>(null)
+
   const {
     data: results,
-  } =
-    useSWR(
-      `classification-${documentId}`,
-      () =>
-        getClassificationResults(
-          documentId,
-        ),
-    )
+    isLoading,
+    mutate,
+  } = useSWR(
+    `classification-${documentId}`,
+    () => getClassificationResults(documentId)
+  )
+
+  const handleClassChange = async (index: number, newType: string) => {
+    setUpdatingIndex(index)
+    try {
+      await correctParagraphType(documentId, index, newType)
+      await mutate()
+    } catch (err) {
+      console.error("Failed to correct classification:", err)
+    } finally {
+      setUpdatingIndex(null)
+    }
+  }
+
+  const items = results ?? []
 
   return (
     <Card>
@@ -463,221 +330,166 @@ function ClassificationTab({
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex flex-col divide-y divide-border">
-        {results?.map(
-          (r) => {
-            const pct =
-              Math.round(
-                r.confidence *
-                  100,
-              )
+      <CardContent className="flex flex-col divide-y divide-border p-0">
+        {isLoading && (
+          <div className="p-8 text-center text-sm text-muted-foreground">
+            Loading classifications…
+          </div>
+        )}
 
-            const tone =
-              pct >= 95
-                ? "bg-success"
-                : pct >= 90
-                  ? "bg-info"
-                  : "bg-warning"
+        {!isLoading && items.length === 0 && (
+          <div className="p-8 text-center text-sm text-muted-foreground">
+            No element classifications found.
+          </div>
+        )}
 
-            return (
-              <div
-                key={r.id}
-                className="flex flex-col gap-2 py-3"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="min-w-0 flex-1 truncate text-sm text-foreground">
-                    {r.content}
-                  </p>
+        {items.map((r: any) => {
+          const confidenceVal = r.confidence ?? 0.85
+          const pct = Math.round(confidenceVal * 100)
+          const isLowConf = pct < 80
+          const tone =
+            pct >= 95
+              ? "bg-success"
+              : pct >= 90
+              ? "bg-info"
+              : "bg-warning"
 
-                  <Badge variant="outline">
-                    {
-                      r.detectedType
-                    }
-                  </Badge>
-                </div>
+          return (
+            <div
+              key={r.id || r.index}
+              className={`flex flex-col gap-3 p-4 transition-colors sm:flex-row sm:items-center sm:justify-between ${
+                isLowConf ? "bg-amber-500/5" : "hover:bg-accent/30"
+              }`}
+            >
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-xs text-muted-foreground">
+                    #{r.index != null ? r.index + 1 : 1}
+                  </span>
 
-                <div className="flex items-center gap-3">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                    <div
-                      className={cn(
-                        "h-full rounded-full",
-                        tone,
-                      )}
-                      style={{
-                        width: `${pct}%`,
-                      }}
-                    />
-                  </div>
+                  {isLowConf ? (
+                    <Badge variant="warning" className="gap-1 text-[10px]">
+                      <AlertCircle className="size-3" />
+                      Needs Review
+                    </Badge>
+                  ) : (
+                    <Badge variant="success" className="gap-1 text-[10px]">
+                      <CheckCircle2 className="size-3" />
+                      Auto
+                    </Badge>
+                  )}
 
-                  <span className="w-10 text-right text-xs font-medium tabular-nums text-muted-foreground">
+                  <span className="text-xs font-semibold tabular-nums text-foreground">
                     {pct}%
                   </span>
                 </div>
-              </div>
-            )
-          },
-        )}
 
-        {!results && (
-          <p className="py-3 text-sm text-muted-foreground">
-            Loading classifications…
-          </p>
-        )}
+                <p className="line-clamp-2 text-sm leading-relaxed text-foreground">
+                  {r.content || r.text}
+                </p>
+
+                <div className="flex items-center gap-3">
+                  <div className="h-1.5 w-48 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={cn("h-full rounded-full", tone)}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+                <select
+                  value={String(r.detectedType || r.type || "BODY").toUpperCase()}
+                  onChange={(e) => handleClassChange(r.index ?? 0, e.target.value)}
+                  disabled={updatingIndex === r.index}
+                  className="h-9 w-[160px] rounded-md border border-input bg-background px-3 py-1 font-mono text-xs font-medium text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {CANONICAL_CLASSES.map((type) => (
+                    <option key={type} value={type} className="bg-popover text-popover-foreground">
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )
+        })}
       </CardContent>
     </Card>
   )
 }
 
-function IssuesTab({
-  documentId,
-}: {
-  documentId: string
-}) {
-  const {
-    data: issues,
-  } =
-    useSWR(
-      `issues-${documentId}`,
-      () =>
-        getFormattingIssues(
-          documentId,
-        ),
-    )
+function IssuesTab({ documentId }: { documentId: string }) {
+  const { data: issues } = useSWR(
+    `issues-${documentId}`,
+    () => getFormattingIssues(documentId)
+  )
 
   const counts = {
-    high:
-      issues?.filter(
-        (i) =>
-          i.severity ===
-          "high",
-      ).length ?? 0,
-
-    medium:
-      issues?.filter(
-        (i) =>
-          i.severity ===
-          "medium",
-      ).length ?? 0,
-
-    low:
-      issues?.filter(
-        (i) =>
-          i.severity ===
-          "low",
-      ).length ?? 0,
+    high: issues?.filter((i: any) => i.severity === "high").length ?? 0,
+    medium: issues?.filter((i: any) => i.severity === "medium").length ?? 0,
+    low: issues?.filter((i: any) => i.severity === "low").length ?? 0,
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-3">
-        {(
-          [
-            "high",
-            "medium",
-            "low",
-          ] as Severity[]
-        ).map(
-          (sev) => {
-            const meta =
-              severityMeta[
-                sev
-              ]
+        {(["high", "medium", "low"] as Severity[]).map((sev) => {
+          const meta = severityMeta[sev]
+          const Icon = meta.icon
 
-            const Icon =
-              meta.icon
-
-            return (
-              <Card
-                key={sev}
-              >
-                <CardContent className="flex items-center gap-3 p-4">
-                  <Icon
-                    className={cn(
-                      "size-5",
-                      sev ===
-                        "high"
-                        ? "text-destructive"
-                        : sev ===
-                            "medium"
-                          ? "text-warning"
-                          : "text-info",
-                    )}
-                  />
-
-                  <div>
-                    <p className="text-lg font-semibold text-foreground">
-                      {
-                        counts[
-                          sev
-                        ]
-                      }
-                    </p>
-
-                    <p className="text-xs text-muted-foreground">
-                      {
-                        meta.label
-                      }{" "}
-                      priority
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          },
-        )}
+          return (
+            <Card key={sev}>
+              <CardContent className="flex items-center gap-3 p-4">
+                <Icon
+                  className={cn(
+                    "size-5",
+                    sev === "high"
+                      ? "text-destructive"
+                      : sev === "medium"
+                      ? "text-warning"
+                      : "text-info"
+                  )}
+                />
+                <div>
+                  <p className="text-lg font-semibold text-foreground">
+                    {counts[sev]}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {meta.label} priority
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
 
       <Card>
         <CardContent className="p-4">
-          {issues?.length ===
-          0 ? (
+          {issues?.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No formatting issues
-              detected yet.
+              No formatting issues detected yet.
             </p>
           ) : (
-            issues?.map(
-              (issue) => {
-                const meta =
-                  severityMeta[
-                    issue
-                      .severity
-                  ]
-
-                return (
-                  <div
-                    key={
-                      issue.id
-                    }
-                    className="border-b border-border py-4 last:border-0"
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium">
-                        {
-                          issue.title
-                        }
-                      </p>
-
-                      <Badge
-                        variant={
-                          meta.variant
-                        }
-                      >
-                        {
-                          meta.label
-                        }
-                      </Badge>
-                    </div>
-
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {
-                        issue.description
-                      }
-                    </p>
+            issues?.map((issue: any) => {
+              const meta = severityMeta[issue.severity as Severity] || severityMeta.low
+              return (
+                <div
+                  key={issue.id}
+                  className="border-b border-border py-4 last:border-0"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">{issue.title}</p>
+                    <Badge variant={meta.variant}>{meta.label}</Badge>
                   </div>
-                )
-              },
-            )
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {issue.description}
+                  </p>
+                </div>
+              )
+            })
           )}
         </CardContent>
       </Card>

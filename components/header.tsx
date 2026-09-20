@@ -1,13 +1,13 @@
 "use client"
 
-import { FileText, Menu } from "lucide-react"
+import { Menu } from "lucide-react"
 import { viewMetaMap } from "@/components/nav-config"
 import { OfflineBadge } from "@/components/offline-status"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useWorkspace } from "@/components/workspace-context"
 
 export function Header({ onMenuClick }: { onMenuClick: () => void }) {
-  const { activeView, uploadedFile } = useWorkspace()
+  const { activeView } = useWorkspace()
   const meta = viewMetaMap[activeView]
 
   return (
@@ -28,12 +28,6 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
         </div>
 
         <div className="flex items-center gap-2.5">
-          {uploadedFile && (
-            <span className="hidden items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-muted-foreground md:inline-flex">
-              <FileText className="size-3.5 text-primary" />
-              <span className="max-w-45 truncate">{uploadedFile.name}</span>
-            </span>
-          )}
           <OfflineBadge className="hidden sm:inline-flex" />
           <ThemeToggle />
         </div>

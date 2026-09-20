@@ -24,6 +24,25 @@ import type {
 
 export const API_BASE_URL = "http://127.0.0.1:8000"
 
+export interface BackendStatus {
+  backend: {
+    ready: boolean
+    version: string
+  }
+  model: {
+    name: string
+    version: string
+    ready: boolean
+    path: string
+  }
+  storage: {
+    ready: boolean
+    output_directory: string
+    analysis_directory: string
+  }
+  mode: string
+}
+
 // ============================================================
 // BACKEND RESPONSE TYPES
 // ============================================================
@@ -57,12 +76,13 @@ interface BackendDocumentListResponse {
 
 interface BackendAnalysisResponse {
   success: boolean
-  message: string
+  message?: string
   document_id: string
   file_name: string
   status: string
-  analysis: Record<string, any>
-  content: Record<string, any>
+  metrics?: Record<string, any>
+  analysis?: Record<string, any>
+  content?: Record<string, any>
 }
 
 interface BackendFormatResponse {
@@ -94,6 +114,7 @@ async function getApiError(response: Response): Promise<string> {
   try {
     const data = await response.json()
     return (
+      data?.detail?.[0]?.msg ||
       data?.detail ||
       data?.message ||
       `Request failed with status ${response.status}`
@@ -121,18 +142,18 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         documents: data.documents ?? 0,
         pages_formatted: data.pages_formatted ?? 0,
         exported: data.exported ?? 0,
-        avg_confidence: data.avg_confidence ?? "94.2%",
+        avg_confidence: data.avg_confidence ?? "—",
       }
     }
   } catch (err) {
-    console.warn("Could not load /analyse/metrics/stats, falling back to local calculation", err)
+    console.warn("Could not load /analyse/metrics/stats", err)
   }
 
   return {
     documents: 0,
     pages_formatted: 0,
     exported: 0,
-    avg_confidence: "94.2%",
+    avg_confidence: "—",
   }
 }
 
@@ -287,7 +308,6 @@ export async function deleteDocument(documentId: string): Promise<void> {
 // ============================================================
 // ANALYSE DOCUMENT
 // ============================================================
-
 export async function analyseDocument(
   documentId: string
 ): Promise<AnalysisStats> {
@@ -311,18 +331,53 @@ export async function analyseDocument(
   }
 
   const data: BackendAnalysisResponse = await response.json()
-  const analysis = data.analysis || {}
+  const a = data.analysis || data.metrics || (data as any)
 
   return {
-    chapters: analysis.chapters ?? 0,
-    headings: analysis.total_headings ?? 0,
-    subheadings: (analysis.heading_2 ?? 0) + (analysis.heading_3 ?? 0),
-    paragraphs: analysis.total_paragraphs ?? analysis.paragraphs ?? 0,
-    tables: analysis.total_tables ?? analysis.tables ?? 0,
-    figures: analysis.total_figures ?? 0,
-    captions: analysis.total_captions ?? 0,
-    references: analysis.total_references ?? 0,
+    chapters: a.chapters ?? a.chapter_count ?? 0,
+    headings: a.headings ?? a.total_headings ?? 0,
+    subheadings: a.subheadings ?? (a.heading_2 ?? 0) + (a.heading_3 ?? 0),
+    paragraphs: a.paragraphs ?? a.total_paragraphs ?? a.body_paragraphs ?? 0,
+    tables: a.tables ?? a.total_tables ?? 0,
+    figures: a.figures ?? a.total_figures ?? 0,
+    captions: a.captions ?? a.total_captions ?? 0,
+    references: a.references ?? a.total_references ?? 0,
   }
+}
+
+// ============================================================
+// HUMAN REVIEW: CORRECT PARAGRAPH CLASSIFICATION
+// ============================================================
+
+export async function correctParagraphType(
+  documentId: string,
+  paragraphIndex: number,
+  correctedType: string
+): Promise<{ success: boolean; message: string; metrics?: any }> {
+  if (!documentId) {
+    throw new Error("Document ID is required.")
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/analyse/${encodeURIComponent(documentId)}/review`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        paragraph_index: paragraphIndex,
+        corrected_type: correctedType,
+      }),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error(await getApiError(response))
+  }
+
+  return response.json()
 }
 
 // ============================================================
@@ -381,7 +436,7 @@ export async function getDocumentStructure(
       id: String(paragraph.index),
       label: paragraph.text,
       type: isChapter ? "chapter" : "section",
-      page: 0,
+      page: paragraph.page ?? 1,
     })
   }
 
@@ -428,7 +483,7 @@ export async function getClassificationResults(
       "HEADING_2",
       "HEADING_3",
       "TITLE",
-    ].includes(String(item.detected_type || "").toUpperCase()),
+    ].includes(String(item.detected_type || item.element_type || "").toUpperCase()),
   }))
 }
 
@@ -738,4 +793,32 @@ export async function downloadDocument(
   }, 1000)
 
   return { fileName, url }
+}
+
+export async function getBackendStatus(): Promise<BackendStatus> {
+  const response = await fetch(`${API_BASE_URL}/status`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  })
+
+  if (!response.ok) {
+    throw new Error(await getApiError(response))
+  }
+
+  return response.json()
+}
+
+export async function clearAnalysisCache(): Promise<number> {
+  const response = await fetch(`${API_BASE_URL}/analyse/cache`, {
+    method: "DELETE",
+    headers: { Accept: "application/json" },
+  })
+
+  if (!response.ok) {
+    throw new Error(await getApiError(response))
+  }
+
+  const data = await response.json()
+  return data.cleared ?? 0
 }
